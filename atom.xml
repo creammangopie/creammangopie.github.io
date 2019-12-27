@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2019-12-27T09:16:24.126Z</updated>
+  <updated>2019-12-27T09:18:34.073Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -21,7 +21,7 @@
     <link href="http://yoursite.com/2019/12/27/default%E5%85%B3%E9%94%AE%E5%AD%97/"/>
     <id>http://yoursite.com/2019/12/27/default%E5%85%B3%E9%94%AE%E5%AD%97/</id>
     <published>2019-12-27T08:26:52.000Z</published>
-    <updated>2019-12-27T09:16:24.126Z</updated>
+    <updated>2019-12-27T09:18:34.073Z</updated>
     
     <summary type="html">
     
@@ -33,7 +33,7 @@
       <category term="java基础" scheme="http://yoursite.com/categories/java%E5%9F%BA%E7%A1%80/"/>
     
     
-      <category term="java语法" scheme="http://yoursite.com/tags/java%E8%AF%AD%E6%B3%95/"/>
+      <category term="-java语法" scheme="http://yoursite.com/tags/java%E8%AF%AD%E6%B3%95/"/>
     
   </entry>
   
