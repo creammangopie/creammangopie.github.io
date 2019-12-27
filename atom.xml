@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
   <title>Star</title>
-  
+  <icon>https://www.gravatar.com/avatar/e8f0aba4417ec70543e5957ca2a6e4fe</icon>
   <subtitle>手可摘星辰</subtitle>
   <link href="/atom.xml" rel="self"/>
   
@@ -11,7 +11,7 @@
   
   <author>
     <name>Jerry Niu</name>
-    
+    <email>15835139079@163.com</email>
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
