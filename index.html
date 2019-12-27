@@ -100,146 +100,15 @@
       
       <h1 id="事务的概念"><a href="#事务的概念" class="headerlink" title="事务的概念"></a>事务的概念</h1><p>事务是逻辑上的一组操作，要求这一组操作要么同时完成 要么同时不完成。</p>
 <h1 id="事务操作"><a href="#事务操作" class="headerlink" title="事务操作"></a>事务操作</h1><p>数据库默认就有事务，mysql中默认情况下一条语句独占一个事务。<br>也可以通过手动控制事务：</p>
-<h2 id="sql控制事务："><a href="#sql控制事务：" class="headerlink" title="sql控制事务："></a>sql控制事务：</h2><p>start transaction; #开启一个事务 这条语句之后的所有的sql都将处在同一个事务中。这些sql都不会立即起作用 - 没有改变底层真正的数据。</p>
-<p>commit; #提交事务 这个事务中所有的sql对数据库的影响立即发生 - 真正改变底层数据。</p>
-<p>rollback; #回滚事务 撤销这个事务中所有的操作可能的对数据库的影响。</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">start transaction;</span><br><span class="line">update account <span class="keyword">set</span> money = money-100 where name='a';</span><br><span class="line">update account <span class="keyword">set</span> money = money+100 where name='b';</span><br><span class="line">commit;</span><br><span class="line"></span><br><span class="line">start transaction;</span><br><span class="line">update account <span class="keyword">set</span> money = money-100 where name='a';</span><br><span class="line">update account <span class="keyword">set</span> money = money+100 where name='b';</span><br><span class="line">rollback;</span><br></pre></td></tr></table></figure>
-<h2 id="JDBC控制事务："><a href="#JDBC控制事务：" class="headerlink" title="JDBC控制事务："></a>JDBC控制事务：</h2><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">conn.setAutoCommit(false);#开启了事务，接下来在这个连接执行的所有sql都将处在同一个事务当中。</span><br><span class="line">			....</span><br><span class="line">conn.commit();#提交事务，将这个连接上执行的事务提交，对数据库产生影响。</span><br><span class="line">conn.rollback();#回滚事务，取消这个连接上执行的事务。</span><br><span class="line"></span><br><span class="line">SavePoint sp = conn.setSavePoint();</span><br><span class="line">conn.rollback(sp);</span><br></pre></td></tr></table></figure>
-<p>要注意，回滚到回滚点时，回滚点之前的代码仍然是未提交也未回滚的状态，如果希望对数据库产生影响仍然需要进行提交的操作。</p>
-<h1 id="事务的四大特性-ACID"><a href="#事务的四大特性-ACID" class="headerlink" title="事务的四大特性  - ACID"></a>事务的四大特性  - ACID</h1><p>原子性 - 事务中的一组操作是不可分割的一个整体，要么一起成功，要么一起失败。</p>
-<p>一致性 - 事务前后 无论事务是否成功 数据库应该都保持一个完整性的状态。数据库中数据是业务完整且约束完整的。</p>
-<p>隔离性 - 多个并发事务之间应该互相隔离 互不影响</p>
-<p>持久性 - 一个事务成功对数据库产生的影响是永久性的，无论发生什么情况 这种影响都不会被取消。</p>
-<h1 id="隔离性的问题"><a href="#隔离性的问题" class="headerlink" title="隔离性的问题"></a>隔离性的问题</h1><p>加锁：同一时间内只能有一个人操作数据，可以完美的保证隔离性，但是这样一来数据库就相当于工作在单线程的状态下，同一时间只能有一个事务操作，并发的效率非常低下。</p>
-<p>而现实生活中并不是所有的场景下都需要那么严格的事务隔离，在不同的业务场景下对隔离性的要求是不同的。</p>
-<p>所以数据库的设计者在设计隔离性时并没有将隔离性写死，而是提供了不同的选项，数据库的使用者可以在使用数据时根据自身需求选择对应的选项来得到相应的隔离能力和性能。</p>
-<p>通过这些选项，数据库使用者可以在数据库的隔离能力和性能间做一个权衡，从而在保证需要的隔离性的基础上得到尽量好的性能。</p>
-<h1 id="四大隔离级别"><a href="#四大隔离级别" class="headerlink" title="四大隔离级别"></a>四大隔离级别</h1><p>Read uncommitted<br>Read committed<br>Repeatable read<br>Serializable  </p>
-<p>(1)Read uncoommitted<br>    数据库不保证任何事务特性 可能出现脏读 不可重复读 虚读(幻读) 问题<br>    <strong>脏读</strong>:一个事务读取到了另一个事务未提交的数据</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line">a:</span><br><span class="line">	<span class="keyword">set</span> session transaction isolation level read uncoommitted;</span><br><span class="line">---------------</span><br><span class="line">	a: 1000</span><br><span class="line">	b: 1000</span><br><span class="line">---------------</span><br><span class="line">b:</span><br><span class="line">	start transaction;</span><br><span class="line">	update account <span class="keyword">set</span> money = money - 100 where name = 'b';</span><br><span class="line">	update account <span class="keyword">set</span> money = money + 100 where name = 'a';</span><br><span class="line"></span><br><span class="line">a:</span><br><span class="line">	start transaction;</span><br><span class="line">	select * from account;</span><br><span class="line">---------------</span><br><span class="line">	a: 1100</span><br><span class="line">	b: 900</span><br><span class="line">---------------</span><br><span class="line">	commit;</span><br><span class="line"></span><br><span class="line">b:</span><br><span class="line">	rollback;</span><br><span class="line"></span><br><span class="line">a:</span><br><span class="line">	start transaction;</span><br><span class="line">	select * from account;</span><br><span class="line">---------------</span><br><span class="line">	a: 1000</span><br><span class="line">	b: 1000</span><br><span class="line">---------------</span><br><span class="line">	commit;</span><br></pre></td></tr></table></figure>
-<p>(2)Read committed<br>保证部分隔离 可以防止脏读问题 但是具有不可重复读 和 虚读(幻读)问题<br><strong>不可重复读</strong>：一个事务读取到另一个事务已经提交的数据</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">a:</span><br><span class="line">	<span class="keyword">set</span> session transaction isolation level read committed;</span><br><span class="line"></span><br><span class="line">-------------------------</span><br><span class="line">	a 1000 1000 1000</span><br><span class="line">-------------------------</span><br><span class="line"></span><br><span class="line">b:</span><br><span class="line">	start transaction;</span><br><span class="line">	select 活期 from account where name = 'a'; -- 活期存款1000</span><br><span class="line">	select 定期 from account where name = 'a'; -- 定期存款1000</span><br><span class="line">	select 固定 from account where name = 'a'; -- 固定存款1000</span><br><span class="line">-------------------------</span><br><span class="line">a:</span><br><span class="line">	start transaction;</span><br><span class="line">	update account <span class="keyword">set</span> money = money - 1000 where name = 'a';</span><br><span class="line">	commit;</span><br><span class="line">-------------------------</span><br><span class="line">b:</span><br><span class="line">    select 活期 + 定期 + 固定 from account where name = 'a';</span><br><span class="line">-------------------------</span><br><span class="line">    总资产2000</span><br></pre></td></tr></table></figure>
-
-<p>(3)Repeatable read<br>保证部分隔离 可以防止脏读 不可重复读问题 但是具有虚读(幻读)问题<br><strong>虚读(幻读)</strong>：一个事务读取全表数据时 读取到另一个事务向表中新增、删除操作提交的结果<br>**虚读(幻读)问题 有可能出现 有可能不出现 概率非常低</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">set</span> session transaction isolation level Repeatable read;</span><br><span class="line">-------------------------</span><br><span class="line">	a 1000 </span><br><span class="line">	b 1000</span><br><span class="line">-------------------------</span><br><span class="line">c：</span><br><span class="line">	start transaction;</span><br><span class="line">	select count(*) from account; -- 2人</span><br><span class="line">	select sum(money) from account; -- 2000元</span><br><span class="line">--------</span><br><span class="line">d：</span><br><span class="line">	start transaction;</span><br><span class="line">	insert into account values(d 4000);</span><br><span class="line">	commit;</span><br><span class="line">-------------------------</span><br><span class="line">	a 1000 </span><br><span class="line">	b 1000</span><br><span class="line">	d 4000</span><br><span class="line">-------------------------</span><br><span class="line"></span><br><span class="line">select avg(money) from account; -- 2000元</span><br><span class="line">commit;</span><br></pre></td></tr></table></figure>
-
-<p>(4)Serializable<br>保证完全隔离 可以防止脏读 不可重复读 虚读(幻读)问题<br>本质上是靠锁来实现的</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">从安全性说：</span><br><span class="line">	Serializable &gt; Repeatable read &gt; Read committed &gt; Read uncommitted </span><br><span class="line">从效率说：</span><br><span class="line">	Read uncommitted &gt;Read committed &gt; Repeatable read &gt; Serializable</span><br><span class="line"><span class="string">``</span><span class="string">`		</span></span><br><span class="line"><span class="string">真正在开发的过程中应该根据自身的业务需求选择一个在**能防止想要防止的隔离性问题的级别**中**性能**最好的一个隔离级别</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">mysql的**默认**隔离级别时 **Repeatable read** </span></span><br><span class="line"><span class="string">`</span><span class="string">``</span>javascript </span><br><span class="line">查看数据库隔离级别：</span><br><span class="line">	select @@tx_isolation;</span><br><span class="line">设置数据库的隔离级别:</span><br><span class="line">	<span class="keyword">set</span> [session/global] transaction isolation level xxxxxx;</span><br></pre></td></tr></table></figure>
-
-<h1 id="数据库中的锁机制"><a href="#数据库中的锁机制" class="headerlink" title="数据库中的锁机制"></a>数据库中的锁机制</h1><p>数据库中是有锁的，但是锁如果控制不好，对效率影响非常大，所以数据库设计者对锁做了特别的设计：<br> 业务情况 | 是否互斥 |<br> :-: | :-: |<br> 两个查询 | 没有必要互斥  |<br> 两个修改 | 必须互斥 |<br> 一个查询 另一个修改 | 具体看情况 Serializable隔离级别下需要排斥 其他隔离级别不需要 |</p>
-<h2 id="共享锁"><a href="#共享锁" class="headerlink" title="共享锁"></a>共享锁</h2><p>共享锁和共享锁可以共存，共享锁和排他锁不能共存<br>在非Serializable级别中查询不加任何锁 在Seralizable级别中查询加共享锁</p>
-<h2 id="排他锁"><a href="#排他锁" class="headerlink" title="排他锁"></a>排他锁</h2><p> 排他锁和任何锁都不能共存<br> 在任意隔离级别下做增删改都加排他锁</p>
-<p><strong>操作和锁的关系</strong><br>            1. 非Serializable级别,查询不加任何锁<br>            2. Serializable级别,查询加共享锁<br>            3. 任意隔离级别下,增删改都加排他锁</p>
-<table>
-<thead>
-<tr>
-<th>a(Rep)</th>
-<th>b(Rep)</th>
-<th>结果</th>
-<th>原因</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>a查询</td>
-<td>b查询</td>
-<td>不互斥</td>
-<td>都不加锁</td>
-</tr>
-<tr>
-<td>a查询</td>
-<td>b增删改</td>
-<td>不互斥</td>
-<td>a不加锁+b排他锁</td>
-</tr>
-<tr>
-<td>a增删改</td>
-<td>b查询</td>
-<td>不互斥</td>
-<td>a排他锁+b不加锁</td>
-</tr>
-<tr>
-<td>a增删改</td>
-<td>b增删改</td>
-<td>互斥</td>
-<td>a排他锁+b排他锁</td>
-</tr>
-</tbody></table>
-<table>
-<thead>
-<tr>
-<th>a(Ser)</th>
-<th>b(Rep)</th>
-<th>结果</th>
-<th>原因</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>a查询</td>
-<td>b查询</td>
-<td>不互斥</td>
-<td>a共享锁+b不加锁</td>
-</tr>
-<tr>
-<td>a查询</td>
-<td>b增删改</td>
-<td>互斥</td>
-<td>a共享锁+b排他锁</td>
-</tr>
-<tr>
-<td>a增删改</td>
-<td>b查询</td>
-<td>不互斥</td>
-<td>a排他锁+b不加锁</td>
-</tr>
-<tr>
-<td>a增删改</td>
-<td>b增删改</td>
-<td>互斥</td>
-<td>a排他锁+b排他锁</td>
-</tr>
-</tbody></table>
-<table>
-<thead>
-<tr>
-<th>a(Ser)</th>
-<th>b(Ser)</th>
-<th>结果</th>
-<th>原因</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>a查询</td>
-<td>b查询</td>
-<td>不互斥</td>
-<td>a共享锁+b共享锁</td>
-</tr>
-<tr>
-<td>a查询</td>
-<td>b增删改</td>
-<td>互斥</td>
-<td>a共享锁+b排他锁</td>
-</tr>
-<tr>
-<td>a增删改</td>
-<td>b查询</td>
-<td>互斥</td>
-<td>a排他锁+b共享锁</td>
-</tr>
-<tr>
-<td>a增删改</td>
-<td>b增删改</td>
-<td>互斥</td>
-<td>a排他锁+b排他锁</td>
-</tr>
-</tbody></table>
-<p>死锁：<br>    当两边都时Serializable隔离级别时<br>    两边都先进行查询 再尝试进行修改 则互相等待对方释放共享锁 都无法接着执行 造成了死锁<br>死锁的解决有两种办法：避免死锁 解决死锁<br>    mysql没有避免死锁，尝试检测死锁，发现死锁后，退出一方，执行另一方来解决了死锁。</p>
-
+      
+      <a class="article-more-link" href="/2019/12/27/Mysql%E7%9A%84%E4%BA%8B%E5%8A%A1%E7%AE%A1%E7%90%86/">阅读更多...</a>
+      
       
       <!-- 打赏 -->
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2019/12/27/Mysql%E7%9A%84%E4%BA%8B%E5%8A%A1%E7%AE%A1%E7%90%86/" data-id="ck4nz6t2r0000fgvi2f8tbz0m"
+      <a data-url="http://yoursite.com/2019/12/27/Mysql%E7%9A%84%E4%BA%8B%E5%8A%A1%E7%AE%A1%E7%90%86/" data-id="ck4nz9r7z0000h8viahsjequy"
         class="article-share-link">分享</a>
       
   <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/mysql/" rel="tag">mysql</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E4%BA%8B%E5%8A%A1/" rel="tag">事务</a></li></ul>

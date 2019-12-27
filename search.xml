@@ -5,6 +5,7 @@
     <url>/2019/12/27/Mysql%E7%9A%84%E4%BA%8B%E5%8A%A1%E7%AE%A1%E7%90%86/</url>
     <content><![CDATA[<h1 id="事务的概念"><a href="#事务的概念" class="headerlink" title="事务的概念"></a>事务的概念</h1><p>事务是逻辑上的一组操作，要求这一组操作要么同时完成 要么同时不完成。</p>
 <h1 id="事务操作"><a href="#事务操作" class="headerlink" title="事务操作"></a>事务操作</h1><p>数据库默认就有事务，mysql中默认情况下一条语句独占一个事务。<br>也可以通过手动控制事务：</p>
+<a id="more"></a>
 <h2 id="sql控制事务："><a href="#sql控制事务：" class="headerlink" title="sql控制事务："></a>sql控制事务：</h2><p>start transaction; #开启一个事务 这条语句之后的所有的sql都将处在同一个事务中。这些sql都不会立即起作用 - 没有改变底层真正的数据。</p>
 <p>commit; #提交事务 这个事务中所有的sql对数据库的影响立即发生 - 真正改变底层数据。</p>
 <p>rollback; #回滚事务 撤销这个事务中所有的操作可能的对数据库的影响。</p>
@@ -29,9 +30,31 @@
 <figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">set</span> session transaction isolation level Repeatable read;</span><br><span class="line">-------------------------</span><br><span class="line">	a 1000 </span><br><span class="line">	b 1000</span><br><span class="line">-------------------------</span><br><span class="line">c：</span><br><span class="line">	start transaction;</span><br><span class="line">	select count(*) from account; -- 2人</span><br><span class="line">	select sum(money) from account; -- 2000元</span><br><span class="line">--------</span><br><span class="line">d：</span><br><span class="line">	start transaction;</span><br><span class="line">	insert into account values(d 4000);</span><br><span class="line">	commit;</span><br><span class="line">-------------------------</span><br><span class="line">	a 1000 </span><br><span class="line">	b 1000</span><br><span class="line">	d 4000</span><br><span class="line">-------------------------</span><br><span class="line"></span><br><span class="line">select avg(money) from account; -- 2000元</span><br><span class="line">commit;</span><br></pre></td></tr></table></figure>
 
 <p>(4)Serializable<br>保证完全隔离 可以防止脏读 不可重复读 虚读(幻读)问题<br>本质上是靠锁来实现的</p>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">从安全性说：</span><br><span class="line">	Serializable &gt; Repeatable read &gt; Read committed &gt; Read uncommitted </span><br><span class="line">从效率说：</span><br><span class="line">	Read uncommitted &gt;Read committed &gt; Repeatable read &gt; Serializable</span><br><span class="line"><span class="string">``</span><span class="string">`		</span></span><br><span class="line"><span class="string">真正在开发的过程中应该根据自身的业务需求选择一个在**能防止想要防止的隔离性问题的级别**中**性能**最好的一个隔离级别</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">mysql的**默认**隔离级别时 **Repeatable read** </span></span><br><span class="line"><span class="string">`</span><span class="string">``</span>javascript </span><br><span class="line">查看数据库隔离级别：</span><br><span class="line">	select @@tx_isolation;</span><br><span class="line">设置数据库的隔离级别:</span><br><span class="line">	<span class="keyword">set</span> [session/global] transaction isolation level xxxxxx;</span><br></pre></td></tr></table></figure>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">从安全性说：</span><br><span class="line">	Serializable &gt; Repeatable read &gt; Read committed &gt; Read uncommitted </span><br><span class="line">从效率说：</span><br><span class="line">	Read uncommitted &gt;Read committed &gt; Repeatable read &gt; Serializable</span><br></pre></td></tr></table></figure>
+<p>真正在开发的过程中应该根据自身的业务需求选择一个在<strong>能防止想要防止的隔离性问题的级别</strong>中<strong>性能</strong>最好的一个隔离级别<br>mysql的<strong>默认</strong>隔离级别时 <strong>Repeatable read</strong> </p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">查看数据库隔离级别：</span><br><span class="line">	select @@tx_isolation;</span><br><span class="line">设置数据库的隔离级别:</span><br><span class="line">	<span class="keyword">set</span> [session/global] transaction isolation level xxxxxx;</span><br></pre></td></tr></table></figure>
 
-<h1 id="数据库中的锁机制"><a href="#数据库中的锁机制" class="headerlink" title="数据库中的锁机制"></a>数据库中的锁机制</h1><p>数据库中是有锁的，但是锁如果控制不好，对效率影响非常大，所以数据库设计者对锁做了特别的设计：<br> 业务情况 | 是否互斥 |<br> :-: | :-: |<br> 两个查询 | 没有必要互斥  |<br> 两个修改 | 必须互斥 |<br> 一个查询 另一个修改 | 具体看情况 Serializable隔离级别下需要排斥 其他隔离级别不需要 |</p>
+<h1 id="数据库中的锁机制"><a href="#数据库中的锁机制" class="headerlink" title="数据库中的锁机制"></a>数据库中的锁机制</h1><p>数据库中是有锁的，但是锁如果控制不好，对效率影响非常大，所以数据库设计者对锁做了特别的设计：  </p>
+<table>
+<thead>
+<tr>
+<th align="center">业务情况</th>
+<th align="center">是否互斥</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">两个查询</td>
+<td align="center">没有必要互斥</td>
+</tr>
+<tr>
+<td align="center">两个修改</td>
+<td align="center">必须互斥</td>
+</tr>
+<tr>
+<td align="center">一个查询 另一个修改</td>
+<td align="center">具体看情况 Serializable隔离级别下需要排斥 其他隔离级别不需要</td>
+</tr>
+</tbody></table>
 <h2 id="共享锁"><a href="#共享锁" class="headerlink" title="共享锁"></a>共享锁</h2><p>共享锁和共享锁可以共存，共享锁和排他锁不能共存<br>在非Serializable级别中查询不加任何锁 在Seralizable级别中查询加共享锁</p>
 <h2 id="排他锁"><a href="#排他锁" class="headerlink" title="排他锁"></a>排他锁</h2><p> 排他锁和任何锁都不能共存<br> 在任意隔离级别下做增删改都加排他锁</p>
 <p><strong>操作和锁的关系</strong><br>            1. 非Serializable级别,查询不加任何锁<br>            2. Serializable级别,查询加共享锁<br>            3. 任意隔离级别下,增删改都加排他锁</p>
