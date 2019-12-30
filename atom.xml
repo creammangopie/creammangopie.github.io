@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2019-12-30T10:48:58.889Z</updated>
+  <updated>2019-12-30T15:13:39.053Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -21,17 +21,11 @@
     <link href="http://yoursite.com/2019/12/30/springBoot1/"/>
     <id>http://yoursite.com/2019/12/30/springBoot1/</id>
     <published>2019-12-30T09:29:04.000Z</published>
-    <updated>2019-12-30T10:48:58.889Z</updated>
+    <updated>2019-12-30T15:13:39.053Z</updated>
     
     <summary type="html">
     
-      
-      
-        
-        
-          &lt;p&gt;#springBoot是什么&lt;br&gt;Spring Boot是构建所有基于Spring的应用程序的起点。Spring Boot旨在通过最少的Spring前期配置使您尽快启动并运行。&lt;br&gt;&lt;img src=&quot;/2019/12/30/springBoot1/1.png&quot;
-        
-      
+      Spring Boot是构建所有基于Spring的应用程序的起点。Spring Boot旨在通过最少的Spring前期配置使您尽快启动并运行。
     
     </summary>
     

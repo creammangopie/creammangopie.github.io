@@ -3,7 +3,134 @@
   <entry>
     <title>springBoot(一)：创建springBoot项目</title>
     <url>/2019/12/30/springBoot1/</url>
-    <content><![CDATA[<p>#springBoot是什么<br>Spring Boot是构建所有基于Spring的应用程序的起点。Spring Boot旨在通过最少的Spring前期配置使您尽快启动并运行。<br><img src="/2019/12/30/springBoot1/1.png" alt></p>
+    <content><![CDATA[<h2 id="springBoot是什么"><a href="#springBoot是什么" class="headerlink" title="springBoot是什么"></a>springBoot是什么</h2><p>Spring Boot是构建所有基于Spring的应用程序的起点。Spring Boot旨在通过最少的Spring前期配置使您尽快启动并运行。</p>
+<p>Spring Boot使创建可运行的独立，生产级基于Spring的应用程序变得容易。我们对Spring平台和第三方库持固执己见的观点，这样您就可以以最小的麻烦开始使用。大多数Spring Boot应用程序只需要很少的Spring配置。</p>
+<a id="more"></a>
+
+<p>您可以使用Spring Boot创建可以通过使用java -jar或更传统的战争部署启动的Java应用程序。我们还提供了一个运行“ spring脚本”的命令行工具。</p>
+<p>我们的主要目标是：</p>
+<p>为所有Spring开发提供根本上更快且可广泛访问的入门体验。</p>
+<p>开箱即用，但由于需求开始与默认值有所出入，因此很快就会摆脱困境。</p>
+<p>提供一系列大型项目通用的非功能性功能（例如嵌入式服务器，安全性，指标，运行状况检查和外部化配置）。</p>
+<p>完全没有代码生成，也不需要XML配置。<br>(来自于spring官方文档)</p>
+<h2 id="从spring官网构建一个项目"><a href="#从spring官网构建一个项目" class="headerlink" title="从spring官网构建一个项目"></a>从spring官网构建一个项目</h2><p><strong>Maven构建项目</strong></p>
+<ul>
+<li>1、访问<a href="http://start.spring.io/" target="_blank" rel="noopener">http://start.spring.io/</a></li>
+<li>2、选择构建工具 Maven Project、Java、Spring Boot 版本 2.2.3 ：<br><img src="/2019/12/30/springBoot1/1.png" alt></li>
+<li>3、点击 Generate Project 下载项目压缩包</li>
+<li>4、解压后，使用 Idea 导入项目，import -&gt; 选择解压后的文件夹 -&gt; OK，选择 Maven 一路 Next，OK done!</li>
+</ul>
+<p><strong>Idea 构建项目</strong></p>
+<ul>
+<li>1、选择 File -&gt; New —&gt; Project… </li>
+<li>2、选择 Spring Initializr，Next 也会出现上述类似的配置界面，Idea 帮我们做了集成</li>
+<li>3、填写相关内容后，点击 Next 选择依赖的包再点击 Next，最后确定信息无误点击 Finish。</li>
+</ul>
+<p>创建完成后就是以下这样子了：<br><img src="/2019/12/30/springBoot1/2.png" alt></p>
+<ul>
+<li>src/main/java 程序开发以及主程序入口</li>
+<li>src/main/resources 配置文件</li>
+<li>src/test/java 测试代码</li>
+</ul>
+<p><strong>引入web</strong></p>
+<p>1、pom.xml中添加支持web的模块：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&lt;dependency&gt;</span><br><span class="line">     &lt;groupId&gt;org.springframework.boot&lt;&#x2F;groupId&gt;</span><br><span class="line">     &lt;artifactId&gt;spring-boot-starter-web&lt;&#x2F;artifactId&gt;</span><br><span class="line"> &lt;&#x2F;dependency&gt;</span><br></pre></td></tr></table></figure>
+<p>pom.xml 文件中默认有两个模块：</p>
+<ul>
+<li>spring-boot-starter ：核心模块，包括自动配置支持、日志和 YAML，如果引入了 spring-boot-starter-web web 模块可以去掉此配置，因为 spring-boot-starter-web 自动依赖了 spring-boot-starter。</li>
+<li>spring-boot-starter-test ：测试模块，包括 JUnit、Hamcrest、Mockito。</li>
+</ul>
+<p>2、写一个controller</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">@RestController</span><br><span class="line">public class HellowWorldController &#123;</span><br><span class="line">    @RequestMapping(&quot;&#x2F;hello&quot;)</span><br><span class="line">    public String index()&#123;</span><br><span class="line">        return &quot;Hello World&quot;;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>加了@RestController就不需要再写@ResponseBody了。</p>
+<p>3、启动主程序，打开浏览器访问 <a href="http://localhost:8080/hello，就可以看到效果了。" target="_blank" rel="noopener">http://localhost:8080/hello，就可以看到效果了。</a></p>
+<h2 id="单元测试"><a href="#单元测试" class="headerlink" title="单元测试"></a>单元测试</h2><p>打开的src/test/下的测试入口，编写简单的 http 请求来测试。</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">@SpringBootTest</span><br><span class="line">public class HelloTests &#123;</span><br><span class="line"></span><br><span class="line">    private MockMvc mvc;</span><br><span class="line"></span><br><span class="line">    @BeforeEach</span><br><span class="line">    public void setUp()&#123;</span><br><span class="line">        mvc &#x3D; MockMvcBuilders.standaloneSetup(new HellowWorldController()).build();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    @Test</span><br><span class="line">    public void getHello() throws Exception&#123;</span><br><span class="line">        mvc.perform(MockMvcRequestBuilders.get(&quot;&#x2F;hello&quot;).accept(MediaType.APPLICATION_JSON))</span><br><span class="line">                .andExpect(status().isOk())</span><br><span class="line">                .andExpect(content().string(equalTo(&quot;Hello World&quot;)));</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>在springBoot2.2.3中@SpringBootTest注解集成了@ExtendWith({SpringExtension.class})，<br><img src="/2019/12/30/springBoot1/3.png" alt></p>
+<p>在Junit4中要加@RunWith(SpringRunner.class)。</p>
+<ul>
+<li>status()，content()，equalTo在代码中没有找到引用，手动引入的：<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;</span><br><span class="line">import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;</span><br><span class="line">import static org.hamcrest.Matchers.equalTo;</span><br></pre></td></tr></table></figure>
+运行test结果如下：<br><img src="/2019/12/30/springBoot1/4.png" alt></li>
+</ul>
+<h2 id="JUnit"><a href="#JUnit" class="headerlink" title="JUnit"></a>JUnit</h2><p>Junit5升级之后很多注解发生变化。</p>
+<table>
+<thead>
+<tr>
+<th>JUnit4</th>
+<th align="center">JUnit5</th>
+<th align="right">说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>@Test</td>
+<td align="center">@Test</td>
+<td align="right">表示该方法是一个测试方法。JUnit5与JUnit 4的@Test注解不同的是，它没有声明任何属性，因为JUnit Jupiter中的测试扩展是基于它们自己的专用注解来完成的。这样的方法会被继承，除非它们被覆盖</td>
+</tr>
+<tr>
+<td>@BeforeClass</td>
+<td align="center">@BeforeAll</td>
+<td align="right">表示使用了该注解的方法应该在当前类中所有使用了@Test @RepeatedTest、@ParameterizedTest或者@TestFactory注解的方法之前 执行；</td>
+</tr>
+<tr>
+<td>@AfterClass</td>
+<td align="center">@AfterAll</td>
+<td align="right">表示使用了该注解的方法应该在当前类中所有使用了@Test、@RepeatedTest、@ParameterizedTest或者@TestFactory注解的方法之后执行；</td>
+</tr>
+<tr>
+<td>@Before</td>
+<td align="center">@BeforeEach</td>
+<td align="right">表示使用了该注解的方法应该在当前类中每一个使用了@Test、@RepeatedTest、@ParameterizedTest或者@TestFactory注解的方法之前 执行</td>
+</tr>
+<tr>
+<td>@After</td>
+<td align="center">@AfterEach</td>
+<td align="right">表示使用了该注解的方法应该在当前类中每一个使用了@Test、@RepeatedTest、@ParameterizedTest或者@TestFactory注解的方法之后 执行</td>
+</tr>
+<tr>
+<td>@Ignore</td>
+<td align="center">@Disabled</td>
+<td align="right">用于禁用一个测试类或测试方法</td>
+</tr>
+<tr>
+<td>@Category</td>
+<td align="center">@Tag</td>
+<td align="right">用于声明过滤测试的tags，该注解可以用在方法或类上；类似于TesgNG的测试组或JUnit 4的分类。</td>
+</tr>
+<tr>
+<td>@Parameters</td>
+<td align="center">@ParameterizedTest</td>
+<td align="right">表示该方法是一个参数化测试</td>
+</tr>
+<tr>
+<td>@RunWith</td>
+<td align="center">@ExtendWith</td>
+<td align="right">@Runwith就是放在测试类名之前，用来确定这个类怎么运行的</td>
+</tr>
+<tr>
+<td>@Rule</td>
+<td align="center">@ExtendWith</td>
+<td align="right">Rule是一组实现了TestRule接口的共享类，提供了验证、监视TestCase和外部资源管理等能力</td>
+</tr>
+<tr>
+<td>@ClassRule</td>
+<td align="center">@ExtendWith</td>
+<td align="right">@ClassRule用于测试类中的静态变量，必须是TestRule接口的实例，且访问修饰符必须为public。</td>
+</tr>
+</tbody></table>
+<h2 id="添加项目热启动"><a href="#添加项目热启动" class="headerlink" title="添加项目热启动"></a>添加项目热启动</h2><p>1、pom.xml添加以下配置：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&lt;dependencies&gt;</span><br><span class="line">    &lt;dependency&gt;</span><br><span class="line">        &lt;groupId&gt;org.springframework.boot&lt;&#x2F;groupId&gt;</span><br><span class="line">        &lt;artifactId&gt;spring-boot-devtools&lt;&#x2F;artifactId&gt;</span><br><span class="line">        &lt;optional&gt;true&lt;&#x2F;optional&gt;</span><br><span class="line">    &lt;&#x2F;dependency&gt;</span><br><span class="line">&lt;&#x2F;dependencies&gt;</span><br><span class="line"></span><br><span class="line">&lt;build&gt;</span><br><span class="line">    &lt;plugins&gt;</span><br><span class="line">        &lt;plugin&gt;</span><br><span class="line">            &lt;groupId&gt;org.springframework.boot&lt;&#x2F;groupId&gt;</span><br><span class="line">            &lt;artifactId&gt;spring-boot-maven-plugin&lt;&#x2F;artifactId&gt;</span><br><span class="line">            &lt;configuration&gt;</span><br><span class="line">                &lt;fork&gt;true&lt;&#x2F;fork&gt;</span><br><span class="line">            &lt;&#x2F;configuration&gt;</span><br><span class="line">        &lt;&#x2F;plugin&gt;</span><br><span class="line">&lt;&#x2F;plugins&gt;</span><br><span class="line">&lt;&#x2F;build&gt;</span><br></pre></td></tr></table></figure>
+<p>2、yml配置</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">devtools:</span><br><span class="line">  livereload:</span><br><span class="line">    enabled: true #是否支持livereload</span><br><span class="line">    port: 35729</span><br><span class="line">  restart:</span><br><span class="line">    enabled: true #是否支持热部署</span><br></pre></td></tr></table></figure>
+<p>3、开启idea自动make功能<br>settings:<br><img src="/2019/12/30/springBoot1/5.png" alt></p>
+<p>4、ctrl + shift + alt + /,选择Registry,勾上 Compiler autoMake allow when app running<br><img src="/2019/12/30/springBoot1/6.png" alt></p>
+<p>5、安装livereload插件</p>
+<p>livereload 通过引入的脚本livereload.js在 livereload 服务和浏览器之间建立了一个 WebSocket 连接。每当监测到文件的变动，livereload 服务就会向浏览器发送一个信号，浏览器收到信号后就刷新页面，实现了实时刷新的效果。每次启动时，需要点击对应的图标。<br>下载livereload插件，将其安装到chrome扩展程序中。<br><img src="/2019/12/30/springBoot1/7.png" alt></p>
+<p>6、测试</p>
+<ul>
+<li>修改类 应用会重启</li>
+<li>修改配置文件 应用会重启</li>
+<li>修改静态文件（html、css等），应用不会重启，但是会调用livereload，浏览器会自动刷新，显示最新的修改内容。</li>
+</ul>
 ]]></content>
       <categories>
         <category>springBoot</category>
