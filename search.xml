@@ -1,6 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>springBoot(一)：创建springBoot项目</title>
+    <url>/2019/12/30/springBoot1/</url>
+    <content><![CDATA[<p>#springBoot是什么<br>Spring Boot是构建所有基于Spring的应用程序的起点。Spring Boot旨在通过最少的Spring前期配置使您尽快启动并运行。<br><img src="/2019/12/30/springBoot1/1.png" alt></p>
+]]></content>
+      <categories>
+        <category>springBoot</category>
+      </categories>
+      <tags>
+        <tag>springboot</tag>
+        <tag>热部署</tag>
+        <tag>Junit</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Mysql的事务管理</title>
     <url>/2019/12/27/Mysql%E7%9A%84%E4%BA%8B%E5%8A%A1%E7%AE%A1%E7%90%86/</url>
     <content><![CDATA[<h1 id="事务的概念"><a href="#事务的概念" class="headerlink" title="事务的概念"></a>事务的概念</h1><p>事务是逻辑上的一组操作，要求这一组操作要么同时完成 要么同时不完成。</p>
