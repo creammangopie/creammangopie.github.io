@@ -1,9 +1,57 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title>1</title>
-    <url>/2020/01/09/1/</url>
-    <content><![CDATA[]]></content>
+    <title>Docker安装mysql数据库</title>
+    <url>/2020/01/08/Docker%E5%AE%89%E8%A3%85mysql%E6%95%B0%E6%8D%AE%E5%BA%93/</url>
+    <content><![CDATA[<h2 id="Windows10安装Docker"><a href="#Windows10安装Docker" class="headerlink" title="Windows10安装Docker"></a>Windows10安装Docker</h2><p>1.打开Docker官网：<a href="https://www.docker.com/" target="_blank" rel="noopener">https://www.docker.com/</a></p>
+<p><img src="/2020/01/08/Docker%E5%AE%89%E8%A3%85mysql%E6%95%B0%E6%8D%AE%E5%BA%93/pasted-0.png" alt></p>
+<a id="more"></a>
+
+<p>2.点击Get started按钮进入主页面</p>
+<p><img src="/2020/01/08/Docker%E5%AE%89%E8%A3%85mysql%E6%95%B0%E6%8D%AE%E5%BA%93/pasted-1.png" alt="upload successful"><br>3.点击会跳转到Docker账号注册页面</p>
+<p><img src="/2020/01/08/Docker%E5%AE%89%E8%A3%85mysql%E6%95%B0%E6%8D%AE%E5%BA%93/pasted-2.png" alt="upload successful"><br>4.注册登录成功后跳转到下载页面</p>
+<p><img src="/2020/01/08/Docker%E5%AE%89%E8%A3%85mysql%E6%95%B0%E6%8D%AE%E5%BA%93/pasted-3.png" alt="upload successful"><br>5.开启win10的Hyper-V ， 控制面板 -&gt; 程序 -&gt; 启用或关闭Windows功能 -&gt; 选中Hyper-V  ，之后重启。 然后点击下载的exe安装文件安装，一路确定就好了。</p>
+<p><img src="/2020/01/08/Docker%E5%AE%89%E8%A3%85mysql%E6%95%B0%E6%8D%AE%E5%BA%93/pasted-4.png" alt="upload successful"><br>6.启动docker， setting -&gt; Daemon 设置阿里云docker镜像仓库。<br>到<a href="https://cr.console.aliyun.com/" target="_blank" rel="noopener">https://cr.console.aliyun.com/</a> 注册一个账户，登录进去后再列表选择加速器，把你的专属加速器地址复制粘贴到Registry mirrors中<br><img src="/2020/01/08/Docker%E5%AE%89%E8%A3%85mysql%E6%95%B0%E6%8D%AE%E5%BA%93/pasted-6.png" alt="upload successful"></p>
+<h2 id="Docker安装Mysql-8-0"><a href="#Docker安装Mysql-8-0" class="headerlink" title="Docker安装Mysql 8.0"></a>Docker安装Mysql 8.0</h2><p>1.打开Windows PowerShell;</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">docker pull mysql</span><br></pre></td></tr></table></figure>
+<p>2.运行镜像，设置root账号初始密码（admin），映射本地宿主机端口3310到Docker端口3306;</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">docker run  --name mysql8.0 -e MYSQL_ROOT_PASSWORD&#x3D;admin -p 3310:3306 -d mysql</span><br></pre></td></tr></table></figure>
+<p>3.查看运行中的容器</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">docker ps</span><br></pre></td></tr></table></figure>
+
+<p><img src="/2020/01/08/Docker%E5%AE%89%E8%A3%85mysql%E6%95%B0%E6%8D%AE%E5%BA%93/pasted-7.png" alt="upload successful"><br>4.进入mysql容器</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">docker exec -it mysql8.0 bash</span><br></pre></td></tr></table></figure>
+
+<p><img src="/2020/01/08/Docker%E5%AE%89%E8%A3%85mysql%E6%95%B0%E6%8D%AE%E5%BA%93/pasted-8.png" alt="upload successful"><br>5.登录mysql</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">mysql -u root -p</span><br></pre></td></tr></table></figure>
+<p>6.允许外部连接数据库</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">ALTER user &#39;root&#39;@&#39;%&#39; IDENTIFIED WITH mysql_native_password BY &#39;admin&#39;;</span><br><span class="line"></span><br><span class="line">FLUSH PRIVILEGES;</span><br></pre></td></tr></table></figure>
+<p>7.查看用户信息</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">select host,user,plugin,authentication_string from mysql.user;</span><br></pre></td></tr></table></figure>
+
+<p><img src="/2020/01/08/Docker%E5%AE%89%E8%A3%85mysql%E6%95%B0%E6%8D%AE%E5%BA%93/pasted-9.png" alt="upload successful"><br>host为 % 表示不限制ip   localhost表示本机使用    plugin非mysql_native_password 则需要修改密码</p>
+<p>8.使用DataGrip进行连接；</p>
+<p><img src="/2020/01/08/Docker%E5%AE%89%E8%A3%85mysql%E6%95%B0%E6%8D%AE%E5%BA%93/pasted-10.png" alt="upload successful"></p>
+<h2 id="Docker-push镜像"><a href="#Docker-push镜像" class="headerlink" title="Docker push镜像"></a>Docker push镜像</h2><p>接下来把我们的mysql镜像推送到自己的docker hub的存储库中去。</p>
+<p>1.访问网址：<a href="https://hub.docker.com" target="_blank" rel="noopener">https://hub.docker.com</a> 在里面创建存储库</p>
+<p><img src="/2020/01/08/Docker%E5%AE%89%E8%A3%85mysql%E6%95%B0%E6%8D%AE%E5%BA%93/pasted-11.png" alt="upload successful"><br>2.把mysql镜像放入mysql存储库并标记为mysql8.0</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">docker tag mysql creammangopie&#x2F;mysql:mysql8.0</span><br></pre></td></tr></table></figure>
+<p>3.查看镜像</p>
+<p><img src="/2020/01/08/Docker%E5%AE%89%E8%A3%85mysql%E6%95%B0%E6%8D%AE%E5%BA%93/pasted-12.png" alt="upload successful"><br>4.推送镜像</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">docker push creammangopie&#x2F;mysql:tagname</span><br></pre></td></tr></table></figure>
+<p><img src="/2020/01/08/Docker%E5%AE%89%E8%A3%85mysql%E6%95%B0%E6%8D%AE%E5%BA%93/pasted-14.png" alt="upload successful"><br>5.Docker Hub上查看镜像</p>
+<p><img src="/2020/01/08/Docker%E5%AE%89%E8%A3%85mysql%E6%95%B0%E6%8D%AE%E5%BA%93/pasted-15.png" alt="upload successful"><br>6.从远程存储库中提取并运行镜像：现在当远程存储库有了镜像后，就可以从远程存储库提取并运行了</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">docker run -e MYSQL_ROOT_PASSWORD&#x3D;admin -p 3310:3306 creammangopie&#x2F;mysql:mysql8.0</span><br></pre></td></tr></table></figure>
+
+
+]]></content>
+      <categories>
+        <category>docker</category>
+      </categories>
+      <tags>
+        <tag>mysql</tag>
+        <tag>docker</tag>
+      </tags>
   </entry>
   <entry>
     <title>springBoot(一)：创建springBoot项目</title>
