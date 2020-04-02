@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+    
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+  <title>
+    Java垃圾回收 |  Star
+  </title>
+  <meta name="generator" content="hexo-theme-yilia-plus">
+  
+  <link rel="shortcut icon" href="/favicon.ico" />
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+<script src="/js/pace.min.js"></script>
+
+
+  
+
+  
+
+<link rel="alternate" href="/atom.xml" title="Star" type="application/atom+xml">
+</head>
+
+</html>
+
+<body>
+  <div id="app">
+    <main class="content">
+      <section class="outer">
+  <article id="post-Java垃圾回收" class="article article-type-post" itemscope
+  itemprop="blogPost" data-scroll-reveal>
+
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h1 class="article-title sea-center" style="border-left:0" itemprop="name">
+  Java垃圾回收
+</h1>
+  
+
+    </header>
+    
+
+    
+    <div class="article-meta">
+      <a href="/2020/04/01/Java%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6/" class="article-date">
+  <time datetime="2020-04-01T10:03:14.000Z" itemprop="datePublished">2020-04-01</time>
+</a>
+      
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/java%E5%9F%BA%E7%A1%80/">java基础</a>
+  </div>
+
+      
+      
+<div class="word_count">
+    <span class="post-time">
+        <span class="post-meta-item-icon">
+            <i class="ri-quill-pen-line"></i>
+            <span class="post-meta-item-text"> 字数统计:</span>
+            <span class="post-count">3.7k字</span>
+        </span>
+    </span>
+
+    <span class="post-time">
+        &nbsp; | &nbsp;
+        <span class="post-meta-item-icon">
+            <i class="ri-book-open-line"></i>
+            <span class="post-meta-item-text"> 阅读时长≈</span>
+            <span class="post-count">13分钟</span>
+        </span>
+    </span>
+</div>
+
+      
+    </div>
+    
+
+    
+    
+    <div class="tocbot"></div>
+
+
+
+
+
+    
+
+    <div class="article-entry" itemprop="articleBody">
+      
+
+
+      
+
+      
+      <p>垃圾回收是java针对堆中垃圾进行的清理，有效释放内存的一种手段。</p>
+<h2 id="什么是垃圾回收"><a href="#什么是垃圾回收" class="headerlink" title="什么是垃圾回收"></a>什么是垃圾回收</h2><p>垃圾回收（Garbage Collection,GC)就是释放垃圾占用的空间，防止内存泄漏，可以有效使用内存，对内存堆中已经死亡或者长时间未使用的对象进行清除。</p>
+<p>Java语言之前，C或者C++的程序创建对象需要不断开辟空间，当使用完成后需要释放，既要写构造函数，又要写析构函数，很多时候都在重复的 allocated，然后不停的析构。于是，有人就提出，能不能写一段程序实现这块功能，每次创建，释放控件的时候复用这段代码，而无需重复的书写呢？</p>
+<p>1960年，基于 MIT 的 Lisp 首先提出了垃圾回收的概念，而这时 Java 还没有出世呢！所以实际上 GC 并不是Java的专利，GC 的历史远远大于 Java 的历史！</p>
+<a id="more"></a>
+
+<h2 id="怎么定义垃圾"><a href="#怎么定义垃圾" class="headerlink" title="怎么定义垃圾"></a>怎么定义垃圾</h2><p><em>引用计数算法</em><br>引用技术算法（Reachability Counting)是通过再对象头中分配一个空间来保存该对象被引用的次数（Reference Count）。如果该对象被其它对象引用，则它的引用数加1，如果删除对该对象的引用，那么它的引用数就减1，当该对象的引用计数为0时，那么该对象就可以被回收。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">String m = <span class="keyword">new</span> String(<span class="string">"jack"</span>);</span><br></pre></td></tr></table></figure>
+
+<p>先创建一个字符串，这时候“jack”有一个引用，就是m。</p>
+<p><img src="/2020/04/01/Java%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6/pasted-1.png" alt></p>
+<p>然后将m设置为null.这时候“jack”的引用次数就等于0了，在引用计数算法中，意味着这块内容就需要被回收了。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">m = <span class="keyword">null</span>;</span><br></pre></td></tr></table></figure>
+
+<p><img src="/2020/04/01/Java%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6/pasted-2.png" alt></p>
+<p>引用计数算法是将垃圾回收分摊到整个应用程序的运行当中了，而不是在进行垃圾搜集时，要挂起整个应用的运行，直到对堆中所有对象的处理都结束（不属于“Stop-The-World”）。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ReferenceCountingGC</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> Object instance;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">ReferenceCountingGC</span><span class="params">(String name)</span></span>&#123;&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">testGC</span><span class="params">()</span></span>&#123;</span><br><span class="line"></span><br><span class="line">    ReferenceCountingGC a = <span class="keyword">new</span> ReferenceCountingGC(<span class="string">"objA"</span>);</span><br><span class="line">    ReferenceCountingGC b = <span class="keyword">new</span> ReferenceCountingGC(<span class="string">"objB"</span>);</span><br><span class="line"></span><br><span class="line">    a.instance = b;</span><br><span class="line">    b.instance = a;</span><br><span class="line"></span><br><span class="line">    a = <span class="keyword">null</span>;</span><br><span class="line">    b = <span class="keyword">null</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>1.定义两个对象<br>2.相互引用<br>3.置空各自的声明引用</p>
+<p><img src="/2020/04/01/Java%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6/pasted-3.webp" alt></p>
+<p>系统中不存在第三个对象引用a和b,所以a、b应该是系统回收的垃圾对象，但是因为垃圾对象之间的循环引用，引用计数器不为0，通过引用计数算法，也就永远无法通知GC收集器回收他们。</p>
+<p><em>可达性分析算法</em></p>
+<p>可达性分析算法（Reachability Analysis）的基本思路是,通过一些被称为引用链(GC Roots)的对象作为起点，从这些节点开始向下搜索，搜索走过的路径被称为（Reference Chain）,当一个对象到GC Roots没有任何引用链相连时（即从GC Roots节点到该节点不可达），则证明该对象是不可用的。</p>
+<p><img src="/2020/04/01/Java%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6/pasted-4.jpg" alt></p>
+<p>通过可达性算法，成功解决了引用计数无法解决的“循环依赖”问题，只要你无法与GC Root建立直接或间接的连接，系统就会判定你为可回收的对象。那这样就引申出了另一个问题，哪些属于 GC Root。</p>
+<h2 id="Java内存区域"><a href="#Java内存区域" class="headerlink" title="Java内存区域"></a>Java内存区域</h2><p>在java语言中，可作为GC Root的对象包括以下四种：<br>虚拟机栈（栈帧中的本地变量表）中引用的对象<br>方法区中类静态属性引用的对象<br>方法区中常量引用的对象<br>本地方法栈中JNI（即一般说的Native方法）引用的对象</p>
+<p><img src="/2020/04/01/Java%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6/pasted-5.jpg" alt></p>
+<p>虚拟机栈（栈帧中的本地变量表）中引用的对象</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">StackLocalParameter</span></span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">StackLocalParameter</span><span class="params">(String name)</span></span>&#123;&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">testGC</span><span class="params">()</span></span>&#123;</span><br><span class="line">    StackLocalParameter s = <span class="keyword">new</span> StackLocalParameter(<span class="string">"localParameter"</span>);</span><br><span class="line">    s=<span class="keyword">null</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>此时的s，即为GC Root,当s置空时，localParameter对象也断掉了与GC Root的引用链，将被回收。</p>
+<p><em>方法区中类静态属性引用的对象</em></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MethodAreaStaicProperties</span></span>&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> MethodAreaStaicProperties m;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">MethodAreaStaicProperties</span><span class="params">(String name)</span></span>&#123;&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">testGC</span><span class="params">()</span></span>&#123;</span><br><span class="line">    MethodAreaStaicProperties s = <span class="keyword">new</span> MethodAreaStaicProperties(<span class="string">"properties"</span>);</span><br><span class="line">    s.m = <span class="keyword">new</span> MethodAreaStaicProperties(<span class="string">"parameter"</span>);</span><br><span class="line">    s = <span class="keyword">null</span>; </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>s为GC Root,s置为null,经过GC后，s所指的properties对象由于无法与GC Root建立关系被回收。<br>而m作为类的静态属性，也属于GC Root，parameter对象依然与GC Root建立着连接，所以此时parameter对象并不会被回收。</p>
+<p><em>方法区中常量引用的对象</em></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span>  <span class="title">MethodAraaStaticProrperties</span></span>&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> MethodAraaStaticProrperties m = MethodAraaStaticProrperties(<span class="string">"final"</span>);</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">MethodAraaStaticProrperties</span><span class="params">(String name)</span></span>&#123;&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">testGC</span><span class="params">()</span></span>&#123;</span><br><span class="line">    MethodAraaStaticProrperties s = <span class="keyword">new</span> MethodAraaStaticProrperties(<span class="string">"staticProperties"</span>);</span><br><span class="line">    s = <span class="keyword">null</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>m即为方法区中的常量引用，也为GC Root,s置为null后，final对象也不会因没有与GC Root建立联系而被回收。</p>
+<p><em>本地方法栈中引用的对象</em><br>任何Native接口都会使用某种本地方法栈，实现的本地方法接口时使用C连接模型的话，那么它的本地方法栈就是C栈。当线程调用Java方法时，虚拟机会创建一个新的栈帧并压入Java栈。<br>然而当它的调用是本地方法时，虚拟机会保持Java栈不变，不再在线程的Java栈中压入新的栈帧，虚拟机只是简单的连接并调用指定的本地方法。</p>
+<p><img src="/2020/04/01/Java%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6/pasted-6.jpg" alt></p>
+<h2 id="垃圾回收算法与思想"><a href="#垃圾回收算法与思想" class="headerlink" title="垃圾回收算法与思想"></a>垃圾回收算法与思想</h2><p><em>标记–清除算法（Mark-Sweep）</em></p>
+<p><img src="/2020/04/01/Java%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6/pasted-7.webp" alt></p>
+<p>标记清除算法是现代垃圾回收算法的思想基础。它分为标记阶段和清除阶段。在标记阶段，首先通过根节点，标记所有从根节点开始的可达对象。因此，未被标记的对象就是未被引用的垃圾对象。然后，在<br>清除阶段，清除所有未被标记的对象。</p>
+<p>上图中等方块的假设是 2M，小一些的是 1M，大一些的是 4M。等我们回收完，内存就会切成了很多段。我们知道开辟内存空间时，需要的是连续的内存区域，这时候我们需要一个 2M的内存区域，<br>其中有2个 1M 是没法用的。这样就导致，其实我们本身还有这么多的内存的，但却用不了。</p>
+<p><em>复制算法(Copying)</em></p>
+<p><img src="/2020/04/01/Java%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6/pasted-8.jpg" alt></p>
+<p>将原有的内存空间分为两块，每次只使用其中一块，在垃圾回收时，将正在使用的内存中的存活对象复制到未使用的内存中，之后，清除正在使用的内存块中的所有对象，交换两个内存的角色，完成垃圾回收。</p>
+<p>如果系统中的垃圾对象很多，复制算法需要复制的存活对象数量并不会太大。因此，在真正需要垃圾回收的时候，复制算法的效率是很高的。又由于对象是在垃圾回收过程中统一被复制到新的内存空间中，因此，可确保<br>回收后的内存空间是没有碎片的。虽然有以上两大优点，但是复制算法的缺点是将系统内存折半，代价太大。</p>
+<p><em>标记-整理算法（Mark-Compact）</em></p>
+<p><img src="/2020/04/01/Java%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6/pasted-9.webp" alt></p>
+<p>复制算法的高效性是建立在存活对象少、垃圾对象多的前提下的。这种情况在年轻代经常发生，但是在老年代，更常见的情况是大部分对象都是存活对象。如果依然使用复制算法，由于存活对象较多，复制的成本也会<br>较高。因此，基于老年代垃圾回收的特性，需要使用新的算法。</p>
+<p>标记整理算法标记过程仍然与标记–清除算法一样，但后续步骤不是直接对可回收对象进行清理，而是让所有存活的对象移动到内存的一端。之后，清理掉边界外所有的空间。这种方法既避免了碎片的产生，又规避了复制算法<br>只能利用一半内存的弊端。但是它对内存变动更频繁，需要整理所有存活对象的引用地址，在效率上比复制算法要差很多。</p>
+<p><em>分代收集算法（Generational Collection）</em></p>
+<p>分代收集算法严格来说并不是一种思想或理论，而是融合上述三种基础的算法思想，而产生的针对不同情况所采用不同算法的一套组合拳。对象存活周期的不同将内存划分为几块。一般是把Java堆分为新生代和来年代，这样<br>就可以根据各个年代的特点采用最适当的收集算法。在新生代中，每次垃圾收集时都发现有大批对象死去，只有少量存活，那就选用复制算法，只需要付出少量存活对象的复制成本就可以完成收集。而老年代中因为对象存活率高、<br>没有额外空间对它进行分配担保，就必须使用标记-清理或者标记-整理算法来回收。</p>
+<h2 id="内存模型与回收策略"><a href="#内存模型与回收策略" class="headerlink" title="内存模型与回收策略"></a>内存模型与回收策略</h2><p><img src="/2020/04/01/Java%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6/pasted-10.webp" alt></p>
+<p>Java堆(Java Heap)是JVM所管理的内存中最大的一块，堆有事垃圾收集器管理的主要区域。</p>
+<p>Java堆主要分为两个区域-年轻代与老年代，其中年轻代又分为Eden区和Survivor区，其中Survivor区又分From和To两个区。</p>
+<h3 id="Eden区"><a href="#Eden区" class="headerlink" title="Eden区"></a>Eden区</h3><p>IBM 公司的专业研究表明，有将近98%的对象是朝生夕死，所以针对这一现状，大多数情况下，对象会在新生代 Eden 区中进行分配，当 Eden 区没有足够空间进行分配时，虚拟机会发起一次 Minor GC，Minor GC 相比 Major GC 更频繁，回收速度也更快。</p>
+<p>通过 Minor GC 之后，Eden 会被清空，Eden 区中绝大部分对象会被回收，而那些无需回收的存活对象，将会进到 Survivor 的 From 区（若 From 区不够，则直接进入 Old 区）。</p>
+<h3 id="Survivor-区"><a href="#Survivor-区" class="headerlink" title="Survivor 区"></a>Survivor 区</h3><p>Survivor 区相当于是 Eden 区和 Old 区的一个缓冲，类似于我们交通灯中的黄灯。Survivor 又分为2个区，一个是 From 区，一个是 To 区。每次执行 Minor GC，会将 Eden 区和 From 存活的对象放到 Survivor 的 To 区（如果 To 区不够，则直接进入 Old 区）。</p>
+<p>为啥需要？</p>
+<p>不就是新生代到老年代么，直接 Eden 到 Old 不好了吗，为啥要这么复杂。想想如果没有 Survivor 区，Eden 区每进行一次 Minor GC，存活的对象就会被送到老年代，老年代很快就会被填满。而有很多对象虽然一次 Minor GC 没有消灭，但其实也并不会蹦跶多久，或许第二次，第三次就需要被清除。这时候移入老年区，很明显不是一个明智的决定。</p>
+<p>所以，Survivor 的存在意义就是减少被送到老年代的对象，进而减少 Major GC 的发生。Survivor 的预筛选保证，只有经历16次 Minor GC 还能在新生代中存活的对象，才会被送到老年代。</p>
+<p>为啥需要俩？</p>
+<p>设置两个 Survivor 区最大的好处就是解决内存碎片化。</p>
+<p>我们先假设一下，Survivor 如果只有一个区域会怎样。Minor GC 执行后，Eden 区被清空了，存活的对象放到了 Survivor 区，而之前 Survivor 区中的对象，可能也有一些是需要被清除的。问题来了，这时候我们怎么清除它们？在这种场景下，我们只能标记清除，而我们知道标记清除最大的问题就是内存碎片，在新生代这种经常会消亡的区域，采用标记清除必然会让内存产生严重的碎片化。因为 Survivor 有2个区域，所以每次 Minor GC，会将之前 Eden 区和 From 区中的存活对象复制到 To 区域。第二次 Minor GC 时，From 与 To 职责兑换，这时候会将 Eden 区和 To 区中的存活对象再复制到 From 区域，以此反复。</p>
+<p>这种机制最大的好处就是，整个过程中，永远有一个 Survivor space 是空的，另一个非空的 Survivor space 是无碎片的。那么，Survivor 为什么不分更多块呢？比方说分成三个、四个、五个?显然，如果 Survivor 区再细分下去，每一块的空间就会比较小，容易导致 Survivor 区满，两块 Survivor 区可能是经过权衡之后的最佳方案。</p>
+<p>Old 区</p>
+<p>老年代占据着2/3的堆内存空间，只有在 Major GC 的时候才会进行清理，每次 GC 都会触发“Stop-The-World”。内存越大，STW 的时间也越长，所以内存也不仅仅是越大就越好。由于复制算法在对象存活率较高的老年代会进行很多次的复制操作，效率很低，所以老年代这里采用的是标记 — 整理算法。</p>
+<p>除了上述所说，在内存担保机制下，无法安置的对象会直接进到老年代，以下几种情况也会进入老年代。</p>
+<p>大对象</p>
+<p>大对象指需要大量连续内存空间的对象，这部分对象不管是不是“朝生夕死”，都会直接进到老年代。这样做主要是为了避免在 Eden 区及2个 Survivor 区之间发生大量的内存复制。当你的系统有非常多“朝生夕死”的大对象时，得注意了。</p>
+<p>长期存活对象</p>
+<p>虚拟机给每个对象定义了一个对象年龄（Age）计数器。正常情况下对象会不断的在 Survivor 的 From 区与 To 区之间移动，对象在 Survivor 区中每经历一次 Minor GC，年龄就增加1岁。当年龄增加到15岁时，这时候就会被转移到老年代。当然，这里的15，JVM 也支持进行特殊设置。</p>
+<p>动态对象年龄</p>
+<p>虚拟机并不重视要求对象年龄必须到15岁，才会放入老年区，如果 Survivor 空间中相同年龄所有对象大小的总合大于 Survivor 空间的一半，年龄大于等于该年龄的对象就可以直接进去老年区，无需等你“成年”。</p>
+<p>这其实有点类似于负载均衡，轮询是负载均衡的一种，保证每台机器都分得同样的请求。看似很均衡，但每台机的硬件不通，健康状况不同，我们还可以基于每台机接受的请求数，或每台机的响应时间等，来调整我们的负载均衡算法。</p>
+
+      
+      <!-- 打赏 -->
+      
+      <div id="reward-btn">
+        打赏
+      </div>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2020/04/01/Java%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6/" data-id="ck8iipn470000zovibkbogxlw"
+        class="article-share-link">分享</a>
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/java/" rel="tag">java</a></li></ul>
+
+    </footer>
+
+  </div>
+
+  
+  
+  <nav class="article-nav">
+    
+    
+      <a href="/2020/01/08/Docker%E5%AE%89%E8%A3%85mysql%E6%95%B0%E6%8D%AE%E5%BA%93/" class="article-nav-link">
+        <strong class="article-nav-caption">下一篇</strong>
+        <div class="article-nav-title">Docker安装mysql数据库</div>
+      </a>
+    
+  </nav>
+
+
+  
+
+  
+  
+<!-- valine评论 -->
+<div id="vcomments-box">
+    <div id="vcomments">
+    </div>
+</div>
+<script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+<script src='https://cdn.jsdelivr.net/npm/valine@1.3.10/dist/Valine.min.js'></script>
+<script>
+    new Valine({
+        el: '#vcomments',
+        notify: false,
+        verify: false,
+        app_id: '',
+        app_key: '',
+        path: window.location.pathname,
+        avatar: 'mp',
+        placeholder: '给我的文章加点评论吧~',
+        recordIP: true
+    });
+    const infoEle = document.querySelector('#vcomments .info');
+    if (infoEle && infoEle.childNodes && infoEle.childNodes.length > 0) {
+        infoEle.childNodes.forEach(function (item) {
+            item.parentNode.removeChild(item);
+        });
+    }
+</script>
+<style>
+    #vcomments-box {
+        padding: 5px 30px;
+    }
+
+    @media screen and (max-width: 800px) {
+        #vcomments-box {
+            padding: 5px 0px;
+        }
+    }
+
+    #vcomments-box #vcomments {
+        background-color: #fff;
+    }
+
+    .v .vlist .vcard .vh {
+        padding-right: 20px;
+    }
+
+    .v .vlist .vcard {
+        padding-left: 10px;
+    }
+</style>
+
+  
+
+  
+  
+  
+
+</article>
+</section>
+      <footer class="footer">
+  <div class="outer">
+    <ul class="list-inline">
+      <li>
+        &copy;
+        2019-2020
+        Jerry Niu
+      </li>
+      <li>
+        
+      </li>
+    </ul>
+    <ul class="list-inline">
+      <li>
+        
+        
+        <ul class="list-inline">
+  <li>PV:<span id="busuanzi_value_page_pv"></span></li>
+  <li>UV:<span id="busuanzi_value_site_uv"></span></li>
+</ul>
+        
+      </li>
+      <li>
+        <!-- cnzz统计 -->
+        
+        <script type="text/javascript" src=''></script>
+        
+      </li>
+    </ul>
+  </div>
+</footer>
+    <div class="to_top">
+        <div class="totop" id="totop">
+  <i class="ri-arrow-up-line"></i>
+</div>
+      </div>
+    </main>
+    
+    <aside class="sidebar">
+      
+        <button class="navbar-toggle"></button>
+<nav class="navbar">
+  
+  <div class="logo">
+    <a href="/"><img src="/images/ayer-side.svg" alt="Star"></a>
+  </div>
+  
+  <ul class="nav nav-main">
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/">主页</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/archives">目录</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/tags">标签</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/categories">分类</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/2019/about">关于我</a>
+    </li>
+    
+  </ul>
+</nav>
+<nav class="navbar navbar-bottom">
+  <ul class="nav">
+    <li class="nav-item">
+      
+      <a class="nav-item-link nav-item-search"  title="Search">
+        <i class="ri-search-line"></i>
+      </a>
+      
+      
+      <a class="nav-item-link" target="_blank" href="/atom.xml" title="RSS Feed">
+        <i class="ri-rss-line"></i>
+      </a>
+      
+    </li>
+  </ul>
+</nav>
+<div class="search-form-wrap">
+  <div class="local-search local-search-plugin">
+  <input type="search" id="local-search-input" class="local-search-input" placeholder="Search...">
+  <div id="local-search-result" class="local-search-result"></div>
+</div>
+</div>
+      </aside>
+      <div id="mask"></div>
+
+<!-- #reward -->
+<div id="reward">
+  <span class="close"><i class="ri-close-line"></i></span>
+  <p class="reward-p"><i class="ri-cup-line"></i>请我喝杯咖啡吧~</p>
+  <div class="reward-box">
+    
+    <div class="reward-item">
+      <img class="reward-img" src="/images/alipay.jpg">
+      <span class="reward-type">支付宝</span>
+    </div>
+    
+    
+    <div class="reward-item">
+      <img class="reward-img" src="/images/wechat.png">
+      <span class="reward-type">微信</span>
+    </div>
+    
+  </div>
+</div>
+      
+<script src="/js/jquery-2.0.3.min.js"></script>
+
+
+<script src="/js/jquery.justifiedGallery.min.js"></script>
+
+
+<script src="/js/lazyload.min.js"></script>
+
+
+<script src="/js/busuanzi-2.3.pure.min.js"></script>
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+  
+<script src="/js/tocbot.min.js"></script>
+
+  <script>
+    // Tocbot_v4.7.0  http://tscanlin.github.io/tocbot/
+    tocbot.init({
+      tocSelector: '.tocbot',
+      contentSelector: '.article-entry',
+      headingSelector: 'h1, h2, h3, h4, h5, h6',
+      hasInnerContainers: true,
+      scrollSmooth: true,
+      positionFixedSelector: '.tocbot',
+      positionFixedClass: 'is-position-fixed',
+      fixedSidebarOffset: 'auto',
+			onClick: (e) => {
+      	document.getElementById(e.target.innerText).scrollIntoView()
+      	return false;
+    	}
+    });
+  </script>
+
+
+<script>
+  var ayerConfig = {
+    mathjax: true
+  }
+</script>
+
+
+<script src="/js/ayer.js"></script>
+
+
+<script src="https://cdn.jsdelivr.net/npm/jquery-modal@0.9.2/jquery.modal.min.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/jquery-modal@0.9.2/jquery.modal.min.css">
+
+
+  <script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+      tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+  });
+
+  MathJax.Hub.Queue(function() {
+      var all = MathJax.Hub.getAllJax(), i;
+      for(i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+  });
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/mathjax@2.7.6/unpacked/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+
+<script type="text/javascript" src="https://js.users.51.la/20544303.js"></script>
+  
+  
+
+  </div>
+</body>
+
+</html>

@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2020-01-09T03:51:30.700Z</updated>
+  <updated>2020-04-02T08:47:51.426Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -15,6 +15,30 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Java垃圾回收</title>
+    <link href="http://yoursite.com/2020/04/01/Java%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6/"/>
+    <id>http://yoursite.com/2020/04/01/Java%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6/</id>
+    <published>2020-04-01T10:03:14.000Z</published>
+    <updated>2020-04-02T08:47:51.426Z</updated>
+    
+    <summary type="html">
+    
+      &lt;p&gt;垃圾回收是java针对堆中垃圾进行的清理，有效释放内存的一种手段。&lt;/p&gt;
+&lt;h2 id=&quot;什么是垃圾回收&quot;&gt;&lt;a href=&quot;#什么是垃圾回收&quot; class=&quot;headerlink&quot; title=&quot;什么是垃圾回收&quot;&gt;&lt;/a&gt;什么是垃圾回收&lt;/h2&gt;&lt;p&gt;垃圾回收（Garbage Collection,GC)就是释放垃圾占用的空间，防止内存泄漏，可以有效使用内存，对内存堆中已经死亡或者长时间未使用的对象进行清除。&lt;/p&gt;
+&lt;p&gt;Java语言之前，C或者C++的程序创建对象需要不断开辟空间，当使用完成后需要释放，既要写构造函数，又要写析构函数，很多时候都在重复的 allocated，然后不停的析构。于是，有人就提出，能不能写一段程序实现这块功能，每次创建，释放控件的时候复用这段代码，而无需重复的书写呢？&lt;/p&gt;
+&lt;p&gt;1960年，基于 MIT 的 Lisp 首先提出了垃圾回收的概念，而这时 Java 还没有出世呢！所以实际上 GC 并不是Java的专利，GC 的历史远远大于 Java 的历史！&lt;/p&gt;
+    
+    </summary>
+    
+    
+      <category term="java基础" scheme="http://yoursite.com/categories/java%E5%9F%BA%E7%A1%80/"/>
+    
+    
+      <category term="java" scheme="http://yoursite.com/tags/java/"/>
+    
+  </entry>
   
   <entry>
     <title>Docker安装mysql数据库</title>
