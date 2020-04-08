@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2020-04-02T09:05:30.116Z</updated>
+  <updated>2020-04-08T09:51:54.169Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -15,6 +15,36 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>《On Java8》-对象的概念</title>
+    <link href="http://yoursite.com/2020/04/08/%E3%80%8AOn-Java8%E3%80%8B-%E5%AF%B9%E8%B1%A1%E7%9A%84%E6%A6%82%E5%BF%B5/"/>
+    <id>http://yoursite.com/2020/04/08/%E3%80%8AOn-Java8%E3%80%8B-%E5%AF%B9%E8%B1%A1%E7%9A%84%E6%A6%82%E5%BF%B5/</id>
+    <published>2020-04-08T02:55:59.000Z</published>
+    <updated>2020-04-08T09:51:54.169Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;p&gt;面向对象编程(Object-Oriented Programming OOP)是一种编程思维方式和编码架构。&lt;/p&gt;
+&lt;h2 id=&quot;抽象&quot;&gt;&lt;a href=&quot;#抽象&quot; class=&quot;headerlink&quot;
+        
+      
+    
+    </summary>
+    
+    
+      <category term="java基础" scheme="http://yoursite.com/categories/java%E5%9F%BA%E7%A1%80/"/>
+    
+    
+      <category term="java" scheme="http://yoursite.com/tags/java/"/>
+    
+      <category term="On Java8读书笔记" scheme="http://yoursite.com/tags/On-Java8%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/"/>
+    
+  </entry>
   
   <entry>
     <title>Java垃圾回收</title>
