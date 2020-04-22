@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2020-04-08T10:07:48.173Z</updated>
+  <updated>2020-04-22T09:06:38.809Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -17,11 +17,34 @@
   <generator uri="https://hexo.io/">Hexo</generator>
   
   <entry>
+    <title>《On-Java8》2-万物皆对象</title>
+    <link href="http://yoursite.com/2020/04/22/%E3%80%8AOn-Java8%E3%80%8B2-%E4%B8%87%E7%89%A9%E7%9A%86%E5%AF%B9%E8%B1%A1/"/>
+    <id>http://yoursite.com/2020/04/22/%E3%80%8AOn-Java8%E3%80%8B2-%E4%B8%87%E7%89%A9%E7%9A%86%E5%AF%B9%E8%B1%A1/</id>
+    <published>2020-04-22T07:16:21.000Z</published>
+    <updated>2020-04-22T09:06:38.809Z</updated>
+    
+    <summary type="html">
+    
+      &lt;h2 id=&quot;对象操纵&quot;&gt;&lt;a href=&quot;#对象操纵&quot; class=&quot;headerlink&quot; title=&quot;对象操纵&quot;&gt;&lt;/a&gt;对象操纵&lt;/h2&gt;&lt;p&gt;Java利用万物皆对象的思想和单一一致的语法方式来简化问题。虽万物皆可为对象，但我们所操纵的标识符实际上只是对对象的引用。&lt;/p&gt;
+    
+    </summary>
+    
+    
+      <category term="java基础" scheme="http://yoursite.com/categories/java%E5%9F%BA%E7%A1%80/"/>
+    
+    
+      <category term="java" scheme="http://yoursite.com/tags/java/"/>
+    
+      <category term="On Java8读书笔记" scheme="http://yoursite.com/tags/On-Java8%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/"/>
+    
+  </entry>
+  
+  <entry>
     <title>《On Java8》-对象的概念</title>
-    <link href="http://yoursite.com/2020/04/08/%E3%80%8AOn-Java8%E3%80%8B-%E5%AF%B9%E8%B1%A1%E7%9A%84%E6%A6%82%E5%BF%B5/"/>
-    <id>http://yoursite.com/2020/04/08/%E3%80%8AOn-Java8%E3%80%8B-%E5%AF%B9%E8%B1%A1%E7%9A%84%E6%A6%82%E5%BF%B5/</id>
+    <link href="http://yoursite.com/2020/04/08/%E3%80%8AOn-Java8%E3%80%8B1-%E5%AF%B9%E8%B1%A1%E7%9A%84%E6%A6%82%E5%BF%B5/"/>
+    <id>http://yoursite.com/2020/04/08/%E3%80%8AOn-Java8%E3%80%8B1-%E5%AF%B9%E8%B1%A1%E7%9A%84%E6%A6%82%E5%BF%B5/</id>
     <published>2020-04-08T02:55:59.000Z</published>
-    <updated>2020-04-08T10:07:48.173Z</updated>
+    <updated>2020-04-22T07:11:25.624Z</updated>
     
     <summary type="html">
     
