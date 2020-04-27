@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2020-04-22T09:06:38.809Z</updated>
+  <updated>2020-04-27T08:44:09.585Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -15,6 +15,35 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>《On-Java8》3-运算符</title>
+    <link href="http://yoursite.com/2020/04/27/%E3%80%8AOn-Java8%E3%80%8B3-%E8%BF%90%E7%AE%97%E7%AC%A6/"/>
+    <id>http://yoursite.com/2020/04/27/%E3%80%8AOn-Java8%E3%80%8B3-%E8%BF%90%E7%AE%97%E7%AC%A6/</id>
+    <published>2020-04-27T07:04:07.000Z</published>
+    <updated>2020-04-27T08:44:09.585Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;h2 id=&quot;赋值&quot;&gt;&lt;a href=&quot;#赋值&quot; class=&quot;headerlink&quot; title=&quot;赋值&quot;&gt;&lt;/a&gt;赋值&lt;/h2&gt;&lt;p&gt;运算符的赋值是由符号 = 完成的。获取 =
+        
+      
+    
+    </summary>
+    
+    
+      <category term="java基础" scheme="http://yoursite.com/categories/java%E5%9F%BA%E7%A1%80/"/>
+    
+    
+      <category term="java" scheme="http://yoursite.com/tags/java/"/>
+    
+      <category term="On Java8读书笔记" scheme="http://yoursite.com/tags/On-Java8%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/"/>
+    
+  </entry>
   
   <entry>
     <title>《On-Java8》2-万物皆对象</title>
