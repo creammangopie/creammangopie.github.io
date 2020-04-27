@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2020-04-27T08:44:09.585Z</updated>
+  <updated>2020-04-27T10:19:44.536Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -21,17 +21,11 @@
     <link href="http://yoursite.com/2020/04/27/%E3%80%8AOn-Java8%E3%80%8B3-%E8%BF%90%E7%AE%97%E7%AC%A6/"/>
     <id>http://yoursite.com/2020/04/27/%E3%80%8AOn-Java8%E3%80%8B3-%E8%BF%90%E7%AE%97%E7%AC%A6/</id>
     <published>2020-04-27T07:04:07.000Z</published>
-    <updated>2020-04-27T08:44:09.585Z</updated>
+    <updated>2020-04-27T10:19:44.536Z</updated>
     
     <summary type="html">
     
-      
-      
-        
-        
-          &lt;h2 id=&quot;赋值&quot;&gt;&lt;a href=&quot;#赋值&quot; class=&quot;headerlink&quot; title=&quot;赋值&quot;&gt;&lt;/a&gt;赋值&lt;/h2&gt;&lt;p&gt;运算符的赋值是由符号 = 完成的。获取 =
-        
-      
+      &lt;h2 id=&quot;赋值&quot;&gt;&lt;a href=&quot;#赋值&quot; class=&quot;headerlink&quot; title=&quot;赋值&quot;&gt;&lt;/a&gt;赋值&lt;/h2&gt;&lt;p&gt;运算符的赋值是由符号 = 完成的。获取 = 右边的值赋给左边的变量。右边可以是任何常量、变量或者可产生一个返回值的表达式。但左&lt;br&gt;边必须是一个明确的、已命名的变量。&lt;br&gt;基本类型的赋值是直接的(此后对原值的修改不会影响到被赋值的基本类型)，而不像对象，赋予的只是其内存的引用(操作的还是同一个&lt;br&gt;对象)。&lt;/p&gt;
     
     </summary>
     
