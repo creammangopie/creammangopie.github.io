@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2020-04-27T10:19:44.536Z</updated>
+  <updated>2020-04-30T10:13:43.414Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -15,6 +15,58 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>《On-Java8》5-初始化和清理</title>
+    <link href="http://yoursite.com/2020/04/30/%E3%80%8AOn-Java8%E3%80%8B5-%E5%88%9D%E5%A7%8B%E5%8C%96%E5%92%8C%E6%B8%85%E7%90%86/"/>
+    <id>http://yoursite.com/2020/04/30/%E3%80%8AOn-Java8%E3%80%8B5-%E5%88%9D%E5%A7%8B%E5%8C%96%E5%92%8C%E6%B8%85%E7%90%86/</id>
+    <published>2020-04-30T07:08:17.000Z</published>
+    <updated>2020-04-30T10:13:43.414Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;h2 id=&quot;利用构造器保证初始化&quot;&gt;&lt;a href=&quot;#利用构造器保证初始化&quot; class=&quot;headerlink&quot; title=&quot;利用构造器保证初始化&quot;&gt;&lt;/a&gt;利用构造器保证初始化&lt;/h2&gt;&lt;p&gt;在 Java
+        
+      
+    
+    </summary>
+    
+    
+      <category term="java基础" scheme="http://yoursite.com/categories/java%E5%9F%BA%E7%A1%80/"/>
+    
+    
+      <category term="java" scheme="http://yoursite.com/tags/java/"/>
+    
+      <category term="On Java8读书笔记" scheme="http://yoursite.com/tags/On-Java8%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>《On-Java8》4-控制流</title>
+    <link href="http://yoursite.com/2020/04/30/%E3%80%8AOn-Java8%E3%80%8B4-%E6%8E%A7%E5%88%B6%E6%B5%81/"/>
+    <id>http://yoursite.com/2020/04/30/%E3%80%8AOn-Java8%E3%80%8B4-%E6%8E%A7%E5%88%B6%E6%B5%81/</id>
+    <published>2020-04-30T06:39:20.000Z</published>
+    <updated>2020-04-30T07:07:24.489Z</updated>
+    
+    <summary type="html">
+    
+      &lt;h2 id=&quot;true和false&quot;&gt;&lt;a href=&quot;#true和false&quot; class=&quot;headerlink&quot; title=&quot;true和false&quot;&gt;&lt;/a&gt;true和false&lt;/h2&gt;&lt;p&gt;如果想在布尔测试中使用一个非布尔值，那么首先需要使用条件表达式来产生 boolean 类型的结果，例如 if(a != 0)。&lt;/p&gt;
+    
+    </summary>
+    
+    
+      <category term="java基础" scheme="http://yoursite.com/categories/java%E5%9F%BA%E7%A1%80/"/>
+    
+    
+      <category term="java" scheme="http://yoursite.com/tags/java/"/>
+    
+      <category term="On Java8读书笔记" scheme="http://yoursite.com/tags/On-Java8%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/"/>
+    
+  </entry>
   
   <entry>
     <title>《On-Java8》3-运算符</title>
