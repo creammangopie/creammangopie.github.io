@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2020-05-05T05:00:25.463Z</updated>
+  <updated>2020-05-09T07:01:41.460Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -15,6 +15,27 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>数据库连接池</title>
+    <link href="http://yoursite.com/2020/05/09/%E6%95%B0%E6%8D%AE%E5%BA%93%E8%BF%9E%E6%8E%A5%E6%B1%A0/"/>
+    <id>http://yoursite.com/2020/05/09/%E6%95%B0%E6%8D%AE%E5%BA%93%E8%BF%9E%E6%8E%A5%E6%B1%A0/</id>
+    <published>2020-05-09T02:09:12.000Z</published>
+    <updated>2020-05-09T07:01:41.460Z</updated>
+    
+    <summary type="html">
+    
+      &lt;h2 id=&quot;为什么要使用连接池&quot;&gt;&lt;a href=&quot;#为什么要使用连接池&quot; class=&quot;headerlink&quot; title=&quot;为什么要使用连接池&quot;&gt;&lt;/a&gt;为什么要使用连接池&lt;/h2&gt;&lt;p&gt;数据库连接是一种关键的有限的昂贵资源。一个数据库连接对象均对应一个物理数据库连接，每次操作都打开一个物理连接，使用完关闭连接，这样造成系统性能低下。&lt;/p&gt;
+    
+    </summary>
+    
+    
+      <category term="Mysql" scheme="http://yoursite.com/categories/Mysql/"/>
+    
+    
+      <category term="mysql" scheme="http://yoursite.com/tags/mysql/"/>
+    
+  </entry>
   
   <entry>
     <title>《On-Java8》5-初始化和清理</title>
