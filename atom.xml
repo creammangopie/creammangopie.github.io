@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2020-05-09T07:01:41.460Z</updated>
+  <updated>2020-05-09T09:52:14.593Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -15,6 +15,29 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>《On-Java8》6-封装</title>
+    <link href="http://yoursite.com/2020/05/09/%E3%80%8AOn-Java8%E3%80%8B6-%E5%B0%81%E8%A3%85/"/>
+    <id>http://yoursite.com/2020/05/09/%E3%80%8AOn-Java8%E3%80%8B6-%E5%B0%81%E8%A3%85/</id>
+    <published>2020-05-09T08:26:46.000Z</published>
+    <updated>2020-05-09T09:52:14.593Z</updated>
+    
+    <summary type="html">
+    
+      &lt;p&gt;类库的使用者必须依赖他们所使用的那部分类库，并且知道如果使用了类库的新版本，不需要改写代码。另一方面，类库的开发者必须有修改和改进类库的自由，并保证客户代码不会受这些改动影响。&lt;/p&gt;
+    
+    </summary>
+    
+    
+      <category term="java基础" scheme="http://yoursite.com/categories/java%E5%9F%BA%E7%A1%80/"/>
+    
+    
+      <category term="java" scheme="http://yoursite.com/tags/java/"/>
+    
+      <category term="On Java8读书笔记" scheme="http://yoursite.com/tags/On-Java8%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/"/>
+    
+  </entry>
   
   <entry>
     <title>数据库连接池</title>
@@ -42,17 +65,11 @@
     <link href="http://yoursite.com/2020/04/30/%E3%80%8AOn-Java8%E3%80%8B5-%E5%88%9D%E5%A7%8B%E5%8C%96%E5%92%8C%E6%B8%85%E7%90%86/"/>
     <id>http://yoursite.com/2020/04/30/%E3%80%8AOn-Java8%E3%80%8B5-%E5%88%9D%E5%A7%8B%E5%8C%96%E5%92%8C%E6%B8%85%E7%90%86/</id>
     <published>2020-04-30T07:08:17.000Z</published>
-    <updated>2020-05-05T05:00:25.463Z</updated>
+    <updated>2020-05-09T08:32:05.965Z</updated>
     
     <summary type="html">
     
-      
-      
-        
-        
-          &lt;h2 id=&quot;利用构造器保证初始化&quot;&gt;&lt;a href=&quot;#利用构造器保证初始化&quot; class=&quot;headerlink&quot; title=&quot;利用构造器保证初始化&quot;&gt;&lt;/a&gt;利用构造器保证初始化&lt;/h2&gt;&lt;p&gt;在 Java
-        
-      
+      &lt;h2 id=&quot;利用构造器保证初始化&quot;&gt;&lt;a href=&quot;#利用构造器保证初始化&quot; class=&quot;headerlink&quot; title=&quot;利用构造器保证初始化&quot;&gt;&lt;/a&gt;利用构造器保证初始化&lt;/h2&gt;&lt;p&gt;在 Java 中，类的设计者通过构造器保证每个对象的初始化。如果一个类有构造器，那么 Java 会在用户使用对象之前（即对象刚创建完成）自动调用对象的构造器方法，从而保证初始化。&lt;/p&gt;
     
     </summary>
     
